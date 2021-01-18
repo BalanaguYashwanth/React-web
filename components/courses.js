@@ -6,17 +6,11 @@ export default function courses(){
     const [datas,setDatas] = useState(null)
     
     useEffect(() =>{
-        axios.get('https://particle-ae921-default-rtdb.firebaseio.com/courses.json')
+        axios.get('http://127.0.0.1:8000/api/courses/')
         .then( res => {
             let datas = res.data
-            let array=[]
-            for(var obj in datas)
-            {
-                datas[obj].id=obj
-                array.push(datas[obj])
-            }
-            setDatas(array)
             console.log(datas)
+            setDatas(datas)
         })
         .catch(err=>console.log(err))
     },[])
@@ -27,4 +21,3 @@ export default function courses(){
         </div>
     )
 }
-

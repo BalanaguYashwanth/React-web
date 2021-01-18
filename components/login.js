@@ -9,7 +9,7 @@ export default function login(){
 
     function submit() {
         console.log(login)
-        axios.post('https://regulator-values.herokuapp.com/login',{
+        axios.post('http://127.0.0.1:8000/login',{
             username:login.username,
             password:login.password
         })
@@ -22,10 +22,14 @@ export default function login(){
     }
 
     return (
-        <div>
+        <div className="container"> 
+            
+            <img src="https://campustechnology.com/-/media/EDU/CampusTechnology/2019-Images/20191209online.jpg" className="rounded-circle"/> 
             <p> login </p>
-            <input type="text"  onChange={ (e) => (setLogin({...login,username:e.target.value} ))} placeholder="enter the name" />
+            
+            <input type="text"  onChange={ (e) => (setLogin({...login,username:e.target.value} ))} placeholder="enter the username" />
             <br />
+           
             <input type="password"  onChange={ (e) => (setLogin({...login,password:e.target.value}))} placeholder="enter the password" />
             <br  />
             <button onClick={submit} >  submit </button>

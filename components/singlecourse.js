@@ -15,7 +15,7 @@ export default function single({datas}) {
                     (
                         <div  className="col-md-2"  style={{margin:'50px'}}  key={data.id} > 
                             <p> <Link  to={`/learn/${data.title}`} > {data.title}  </Link> </p>
-                            <img id="individual" src={data.image} height="135" width="240" />  
+                            <img id="individual" src={data.imgurl} height="135" width="240" />  
                         </div>
                     ) 
                     )
