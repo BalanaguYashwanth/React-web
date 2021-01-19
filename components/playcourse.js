@@ -24,13 +24,15 @@ export default function playcourse() {
                    var datas=eval(result[obj].data)
                 }   
 
+
                 for(let data in datas)
                 {
                     datas[data].id=parseInt(data)
                     array.push(datas[data])
+
                 }
 
-                console.log(array)
+                //console.log(array)
                setOverview(array)
             })
             .catch(err => console.log(err.message))
@@ -54,6 +56,20 @@ export default function playcourse() {
         .catch(err=>console.log(err))
     }
 
+    function  contentdata(content){
+        return (
+                <div>
+                    {
+                    Object.entries(content).map( ([key,value]) => (
+
+                    <button   key={key} id="select" className={key} onClick={ () => (setVideo(value)) }> {key}   </button>
+                    ) )
+                    } 
+                </div>
+        )
+    }
+    
+
     return (
         <div>
             <Navbar />
@@ -63,6 +79,7 @@ export default function playcourse() {
                         <div className="leftside ">
 
                             <ReactPlayer
+
                                 config={{ file: { attributes: { controlsList: 'nodownload' } } }}
                                 id="playvideocolor"
                                 onContextMenu={e => e.preventDefault()}
@@ -87,27 +104,31 @@ export default function playcourse() {
                         <div className="rightside" >
 
                             <button id="select" style={{ textAlign: 'center' }} onClick={() => (setShow(!show))}  >  Course Syllabus  <i className="fa fa-caret-down"></i> </button>
-                            <button id="select" onClick={ () => (episodes('episode1')) } > Episode 1 : Introduction </button>
-                            <button id="select"> Episode 2 : Basic code</button>
-                            <button id="select" onClick={ () => (episodes('advanced')) }> Episode 3 : Advanced code</button>
                            
                             {
-                              overview &&  overview.map( (data,index) => (
+                               show  && <div>
+                                        <button id="select" onClick={ () => (episodes('episode1')) } > Episode 1 : Introduction </button>
+                                        <button id="select"> Episode 2 : Basic code</button>
+                                        <button id="select" onClick={ () => (episodes('advanced')) }> Episode 3 : Advanced code</button>
+                                        </div>
+                           }
+
+                            {
+                              overview &&  (overview).map( (data,index) => (
 
                                                 <div key={index} > 
 
-                                        <button id="select">  Episode {data.id+1} : {data.subtitle} </button>
-                                                   
+                                                <button id="select" style={{ textAlign: 'center' }} onClick={() => (setShow(!show))}  >{data.subtitle}  <i className="fa fa-caret-down"></i> </button>
+                                              { show &&  <div> {contentdata(data)} </div>}
 
+                                                    {/* <button id="select" style={{ textAlign: 'center' }}  >      <i className="fa fa-caret-down"></i> </button> */}
                                                 </div>
                                             
                                                 )) 
-                            }
-
-
+                            }   
 
                         </div>
-
+                            
                     </div>
 
 
