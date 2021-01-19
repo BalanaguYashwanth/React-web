@@ -6,10 +6,16 @@ export default function courses(){
     const [datas,setDatas] = useState(null)
     
     useEffect(() =>{
-        axios.get('http://127.0.0.1:8000/api/courses/')
+
+        let axiosConfig={
+            headers:{
+                Authorization : "Token " +localStorage.getItem('user-token')
+            }
+        }
+
+        axios.get('http://127.0.0.1:8000/api/courses/',axiosConfig)
         .then( res => {
             let datas = res.data
-            console.log(datas)
             setDatas(datas)
         })
         .catch(err=>console.log(err))

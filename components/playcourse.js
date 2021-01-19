@@ -10,26 +10,38 @@ export default function playcourse() {
 
     const [video, setVideo] = useState(null)
 
-    const [show,setShow] = useState(false)
+    const [show,setShow] = useState(true)
 
     const [overview,setOverview] = useState(null)
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/overview/')
+
+        let axiosConfig = {
+            headers:{
+                Authorization:"Token "+localStorage.getItem('user-token')
+            }            
+        }
+
+        axios.get('http://127.0.0.1:8000/api/overview/',axiosConfig)
             .then(res => {
                 let result = res.data
                 let array=[]
                 for(let obj in result)
                 {
-                   var datas=eval(result[obj].data)
+                    if(result[obj].title == course)
+                    {
+                        var datas=eval(result[obj].data)
+                    }
+                   
                 }   
 
 
                 for(let data in datas)
                 {
+                   
                     datas[data].id=parseInt(data)
-                    array.push(datas[data])
-
+                    array.push(datas[data])    
+                    
                 }
 
                 //console.log(array)
@@ -39,22 +51,6 @@ export default function playcourse() {
     }, [])
 
 
-    function episodes(text){
-        //console.log(course+'-'+text)
-        axios.get('https://particle-ae921-default-rtdb.firebaseio.com/videos.json')
-        .then(res=>{
-            let result = res.data
-            for(let obj in result)
-            {
-                if(result[obj].title == course+'-'+text && result[obj].title!="")
-                {
-                    setVideo(result[obj].video)
-                }
-            }
-        
-        })
-        .catch(err=>console.log(err))
-    }
 
     function  contentdata(content){
         return (
@@ -103,22 +99,14 @@ export default function playcourse() {
 
                         <div className="rightside" >
 
-                            <button id="select" style={{ textAlign: 'center' }} onClick={() => (setShow(!show))}  >  Course Syllabus  <i className="fa fa-caret-down"></i> </button>
+                            <button id="select" style={{ textAlign: 'center' }}   >  Course Syllabus  </button>
                            
-                            {
-                               show  && <div>
-                                        <button id="select" onClick={ () => (episodes('episode1')) } > Episode 1 : Introduction </button>
-                                        <button id="select"> Episode 2 : Basic code</button>
-                                        <button id="select" onClick={ () => (episodes('advanced')) }> Episode 3 : Advanced code</button>
-                                        </div>
-                           }
-
                             {
                               overview &&  (overview).map( (data,index) => (
 
                                                 <div key={index} > 
 
-                                                <button id="select" style={{ textAlign: 'center' }} onClick={() => (setShow(!show))}  >{data.subtitle}  <i className="fa fa-caret-down"></i> </button>
+                                                <button id="select" style={{ textAlign: 'center' }}   >{data.subtitle}  <i className="fa fa-caret-down"></i> </button>
                                               { show &&  <div> {contentdata(data)} </div>}
 
                                                     {/* <button id="select" style={{ textAlign: 'center' }}  >      <i className="fa fa-caret-down"></i> </button> */}
@@ -128,7 +116,7 @@ export default function playcourse() {
                             }   
 
                         </div>
-                            
+
                     </div>
 
 

@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import {Link} from 'react-router-dom'
 
 function navbar(){
     return(
@@ -10,11 +11,9 @@ function navbar(){
                 </button>
                 <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul className="navbar-nav">
+                    
                     <li className="nav-item active">
-                        <a className="nav-link" href="#">Home <span className="sr-only"></span></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Courses</a>
+                        <Link to="/"  className="nav-link" href="#">Courses <span className="sr-only"></span></Link>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">Pricing</a>
@@ -22,8 +21,19 @@ function navbar(){
                     <li className="nav-item">
                         <a className="nav-link" href="#">About</a>
                     </li>
+                    <li className="nav-item">
+                    { 
+                    
+                    localStorage.getItem('user-token') ? (<Link to="/logout" className="nav-link" href="#">logout</Link> ) :
+
+                    (<Link to="/login" className="nav-link" href="#">Login</Link> )
+                        
+                    }
+                    
+                    </li>
                     </ul>
                 </div>
+              
         </nav>
 
         </div>
