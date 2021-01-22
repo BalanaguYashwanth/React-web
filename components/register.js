@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React,{useState,useEffect} from 'react'
-import { Redirect,useHistory } from 'react-router-dom';
+import { Redirect,useHistory,Link } from 'react-router-dom';
 
 export default function register(){
     const history = useHistory();
@@ -47,6 +47,7 @@ export default function register(){
             <input type="password" placeholder="enter the password"  onChange={(e) => ( setPassword(e.target.value) )}     />
             <br />
             <button id="loginbutton" onClick={submit} > submit </button>
+            <p> Already have an account ? <Link to='/login' > Login </Link>   </p>
         </div>
 
 
