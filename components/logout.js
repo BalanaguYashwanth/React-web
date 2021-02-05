@@ -9,13 +9,16 @@ export default function logout(){
 
         let axiosConfig={
             headers:{
-                Authorization : "Token "+localStorage.getItem('user-token')
+                Authorization : "Bearer "+window.atob(localStorage.getItem('access-token'))
             }
         }
 
-        axios.get('http://127.0.0.1:8000/logout',axiosConfig)
+        axios.post('http://127.0.0.1:8000/logout',{
+            token:localStorage.getItem('access-token')
+        },axiosConfig)
         .then(res=>{
-            localStorage.removeItem('user-token')
+            localStorage.removeItem('access-token')
+            localStorage.removeItem('refresh-token')
             console.log(res.data)
             history.push('/login')
         })

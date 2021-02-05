@@ -6,10 +6,9 @@ export default function courses(){
     const [datas,setDatas] = useState(null)
     
     useEffect(() =>{
-
         let axiosConfig={
             headers:{
-                Authorization : "Token " +localStorage.getItem('user-token')
+                Authorization : "Bearer " +window.atob(localStorage.getItem('access-token'))
             }
         }
 
