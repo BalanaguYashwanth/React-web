@@ -13,7 +13,7 @@ export default function playcourse() {
     const [name,setName] = useState()
     const[email,setEmail] = useState()
     const [payhide,setPayhide] = useState(false)
-
+    const [loading,setLoading] = useState(true)
 
     useEffect(() => {
         let axiosConfig = {
@@ -21,7 +21,7 @@ export default function playcourse() {
                 Authorization: "Bearer " + window.atob(localStorage.getItem('access-token'))
             }
         }
-
+       
         axios.get('http://127.0.0.1:8000/api/overview/', axiosConfig)
             .then(res => {
                 let result = res.data
@@ -31,7 +31,6 @@ export default function playcourse() {
                         var datas = eval(result[obj].data)
                     }
                 }
-
 
                 for (let data in datas) {
                     datas[data].id = parseInt(data)
@@ -47,7 +46,7 @@ export default function playcourse() {
 
             axios.get('http://127.0.0.1:8000/userdetails',axiosConfig)
             .then(res=>{
-                console.log(res.data)    
+                //console.log(res.data)    
                 let palldatas = res.data
                 for(let obj1 in palldatas)
                 {
@@ -62,6 +61,9 @@ export default function playcourse() {
 
 
             function coursepayments(emailid){
+
+                //await setPayhide(localStorage.getItem('paid'))
+
                 axios.get('http://127.0.0.1:8000/api/coursepayments/',axiosConfig)
                 .then(res=>{
                     let alldata=res.data
@@ -75,15 +77,17 @@ export default function playcourse() {
                             if(alldata[obj2].hash_verified && alldata[obj2].hash_verified!='')
                             {
                                 setPayhide(true)
-                                console.log('hello')
+                                //localStorage.setItem('paid',true)
                             }
                           }
                        }
                     }
                 })
                 .catch(err=>console.log(err))
+                console.log('loading')
+                setLoading(false)
             }
-
+          
     }, [])
 
 
@@ -106,10 +110,19 @@ export default function playcourse() {
 
     return (
         <div>
-            
+           
             <Navbar />
+
+            <div>
+           {
+           loading && <div className="spinner-grow text-secondary" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            }
+            </div>
+            
           { 
-            payhide  && <div >
+            payhide && <div >
                 <div className="row no-gutters" >
                     <div className="col-md-9 no-gutters " >
                         <div className="leftside ">
@@ -165,7 +178,7 @@ export default function playcourse() {
             </div>
 }
 
-    { !payhide &&    <Enroll />}
+    { !payhide &&   !loading &&  <Enroll />}
 
 
         </div>

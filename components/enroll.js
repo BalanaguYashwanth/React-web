@@ -16,6 +16,7 @@ export default function enroll() {
     const [phonenumber,setPhonenumber] = useState('')
     const [template,setTemplate] = useState({'name':'yash'})
     const [feedback,setFeedback] = useState()
+    const[action,setAction]= useState()
 
     useEffect(() =>{        
         let axiosConfig={
@@ -44,6 +45,12 @@ export default function enroll() {
 
     function press() {
         //console.log('phone',(phonenumber.length))
+
+        let axiosConfig={
+            headers:{
+                Authorization : "Bearer " +window.atob(localStorage.getItem('access-token'))
+            }
+        }
        
         if(course!='' && phonenumber!='' )
         {
@@ -55,7 +62,7 @@ export default function enroll() {
                 phone:phonenumber,
                 email:email,
                 course:course,
-            })
+            },axiosConfig)
             .then(async res=>{
                 let alldetails={}
             
@@ -71,6 +78,8 @@ export default function enroll() {
 
             })
             .catch(err=>console.log(err.message))
+
+            setFeedback('please wait...')
 
             setTimeout(() => {
                 document.payuForm.submit()
