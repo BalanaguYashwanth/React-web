@@ -4,7 +4,7 @@ export default function admin() {
 
     const [fields, setFields] = useState([{ fields: 'enter field' }, { fields: 'enter field' }])
 
-    const [subfields, setSubfields] = useState({ subfields: 'enter subfields' , fields: 'enter fields' })
+    const [subfields, setSubfields] = useState({ subfields: 'enter subfields',fields1: 'enter fields',fields2: 'enter fields'})
 
 
     function addfields() {
@@ -12,7 +12,7 @@ export default function admin() {
     }
 
     function addsubfields() {
-        alert('correcr it')
+        alert('correct it')
         //setSubfields({...subfields,  subfields: '' })
     }
 
@@ -22,10 +22,22 @@ export default function admin() {
         console.log(fields)
     }
 
-    function handleaddsubfields(index, value) {
-        var fsub = [...subfields]
-        fsub[index].subfields = value
-        console.log(fsub)
+    function handleaddsubfields(index,key,value) {
+
+        // let fsub={}
+
+        // for(let obj in subfields)
+        // {
+        //     fsub[obj]=subfields[obj]
+        // }
+
+        // //console.log(subfields)
+        // //subfields[index].key=value
+        // // let fsub = [...subfields]
+        // // fsub[index].subfields= value
+        // console.log(fsub[key])
+
+        console.log(index,key,value)
     }
 
 
@@ -53,25 +65,17 @@ export default function admin() {
 
                         <li>
 
-                            {/* {
-                                subfields.map((field, index) => (
-
-                                    <div key={index} > Subfields <input placeholder={field.subfields} onChange={(e) => handleaddsubfields(index, e.target.value)} /> </div>
-
-                                ))
-                            } */}
-
                             {
-                                Object.entries(subfields).map(([key, value]) => (
+                                Object.entries(subfields).map(([key, value],index) => (
 
-                                    <div key={key} > {key} {value} </div>
+                                    <div key={key} > {key} < input placeholder={value} onChange={(e) => handleaddsubfields(index,key,e.target.value)} />   </div>
 
                                 ))
                             }
 
+
                             <button className="sub" onClick={addsubfields} > + </button>
                         </li>
-
 
                     </ul>
                 </li>
