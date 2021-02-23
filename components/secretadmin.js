@@ -1,9 +1,8 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function admin() {
 
-    //const [fields, setFields] = useState([{ fields: 'enter field' }, { fields: 'enter field' }])
 
     const [subfields, setSubfields] = useState(
         [
@@ -12,29 +11,33 @@ export default function admin() {
                 subtitle: 'enter subfields',
                 videos: [{ id: 1, field: "enter field", link: "enter the link" }]
             },
-            {
-                id: 2,
-                subtitle: 'enter subfields',
-                videos: [{ id: 1, field: "enter field", link: "enter the link" },{ id: 2, field: "enter field", link: "enter the link" }]
-            },
+          
         ]
     )
 
-    const [title,setTitle] = useState()
+    const [title, setTitle] = useState()
+    const [result, setResult] = useState()
 
-    //const [resubfields,setResubfields] = useState([])
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/api/overview/')
+            .then(res => {
+                //console.log(res.data)
+                setResult(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
     function add(field) {
         let svideo = field.videos.length
 
         field.videos.push(
             {
-                id:svideo+1,
-                field: "enter field", 
-                link: "enter the links", 
+                id: svideo + 1,
+                field: "enter field",
+                link: "enter the links",
             }
         )
-        
+
         setSubfields([...subfields])
         //console.log(subfields)           //required
         // setFields([...fields, { fields: '' }])
@@ -50,68 +53,43 @@ export default function admin() {
         console.log(subfields)
     }
 
-    // function handleaddfields(index, value) {
-    //     console.log(index, value)
-    //     fields[index].fields = value
-    //     console.log(fields)
-    // }
 
-    // function handleaddsubfields(field,value,index) {
-
-    //     subfields[index][field]=value
-    //     console.log(subfields)
-    // }
-
-
-    // function calculate(data,index) {
-    //     const list=[]
-
-    //     for (let field in data) {
-    //         list.push(<li key={field} > {field}  <input  placeholder={data[field]} onChange={(e) => (handleaddsubfields(field,e.target.value,index))} />  </li>)
-    //     }
-
-    //     return(
-    //         <div>
-    //         {list}
-    //         </div>
-    //     )
-    // }
-
-
-    function handlesubtitle(text,index){
-        subfields[index].subtitle=text
-        console.log(subfields)
+    function handlesubtitle(text, index) {
+        subfields[index].subtitle = text
     }
 
-    function handlevideos(text,index,mainindex){
-        subfields[mainindex].videos[index].field=text
-        console.log(subfields)
+    function handlevideos(text, index, mainindex) {
+        subfields[mainindex].videos[index].field = text
+        //console.log(subfields)
     }
 
-    function handlevideoslink(link,index,mainindex){
-        subfields[mainindex].videos[index].link=link
-        console.log(subfields)
+    function handlevideoslink(link, index, mainindex) {
+        subfields[mainindex].videos[index].link = link
+        // console.log(subfields)
     }
 
-    function posting(){
-        axios.post('http://127.0.0.1:8000/api/overview/',{
-            title:title,
-            data:subfields,
+    function posting() {
+        axios.post('http://127.0.0.1:8000/api/overview/', {
+            title: title,
+            data: subfields,
         })
-        .then(res=>console.log(res))
-        .catch(err=>console.log(err))
+            .then(res => {
+                console.log(res)
+                location.reload()
+            })
+            .catch(err => console.log(err))
     }
 
 
-    function videoslist(valvideo,mainindex) {
-       
+    function videoslist(valvideo, mainindex) {
+
         return (
             <div>
                 {
-                    valvideo.map((val,index) => (
+                    valvideo.map((val, index) => (
                         <div key={index}>
-                        <li>  <input placeholder={val.field} onChange={(e) => handlevideos(e.target.value,index,mainindex)} />   </li>
-                        <li>  <input placeholder={val.link}  onChange={(e) => handlevideoslink(e.target.value,index,mainindex)}  />    </li>
+                            <li>  <input placeholder={val.field} onChange={(e) => handlevideos(e.target.value, index, mainindex)} />   </li>
+                            <li>  <input placeholder={val.link} onChange={(e) => handlevideoslink(e.target.value, index, mainindex)} />    </li>
                         </div>
                     ))
                 }
@@ -119,34 +97,77 @@ export default function admin() {
         )
     }
 
+    function deleting(id,title){
+        
+        axios.delete('http://127.0.0.1:8000/api/overview/'+id+'/')
+        .then(res=>{
+            alert( 'Successfully deleted course link :- '+title)
+            location.reload()
+        })
+        .catch(err=>err)
+    }
+
     return (
         <div>
-            <ul>
-                <li>
-                    Title <input placeholder="enter the title" onChange={ (e) => setTitle(e.target.value) } />
-                   <ul>
-                        {
-                            subfields.map((field, index) => (
-                                <li key={index} >
-                                   subtitle <input placeholder= {field.subtitle} onChange={ (e) => (handlesubtitle(e.target.value,index)) }  />
-                                    <ul> 
-                                       <li> 
-                                           videos 
-                                           <ul> {videoslist(field.videos,index)} </ul>
-                                           <button onClick={() => (add(field))} > + </button>
-                                        </li> 
-                                       
-                                    </ul> 
+            <div className="row no-gutters" >
+                <div className="col-md-6 no-gutters" >
+                    <div className="leftside" >
+                        <div className="container" style={{ margin: 'auto', paddingTop: '15%' }} >
+                            <h3>  Course Links </h3>
+                            <ul>
+                                <li>
+                                    Title <input placeholder="enter the title" onChange={(e) => setTitle(e.target.value)} />
+                                    <ul>
+                                        {
+                                            subfields.map((field, index) => (
+                                                <li key={index} >
+                                                    subtitle <input placeholder={field.subtitle} onChange={(e) => (handlesubtitle(e.target.value, index))} />
+                                                    <ul>
+                                                        <li>
+                                                            videos
+                                           <ul> {videoslist(field.videos, index)} </ul>
+                                                            <button onClick={() => (add(field))} > + </button>
+                                                        </li>
+
+                                                    </ul>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                    <button onClick={addsubfields} > + </button>
                                 </li>
-                            ))
-                        }
-                    </ul>
-                    <button onClick={addsubfields} > + </button>
-                </li>
-                <br />
-                <button onClick={posting}> submit </button>
-            </ul>
-           
+                                <br />
+                                <button onClick={posting}> submit </button>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div className="col no-gutters" >
+                    <div className="rightside">
+                        <div className="container" style={{ margin: 'auto', paddingTop: '15%' }} >
+                            <h3>  Updated Course Links </h3>
+
+                            {
+                                result && result.map((res, index) => (
+                                    <div key={index}>
+                                    <div className="card bg-light mb-3" style={{ width: '18rem' }} >
+                                        <div className="card-body px-5 ">
+                                            <p className="card-title "> {index+1})   {res.title}  <button style={{float:'right',border:'None'}} onClick={() => deleting(res.id,res.title) } > <i className="far fa-trash-alt"></i></button> </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                       
+                                ))
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
         </div>
 
     )
