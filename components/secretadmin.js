@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
 export default function admin() {
@@ -9,7 +10,7 @@ export default function admin() {
             {
                 id: 1,
                 subtitle: 'enter subfields',
-                videos: [{ id: 1, field: "enter field1", link: "enter the link" }]
+                videos: [{ id: 1, field: "enter field", link: "enter the link" }]
             },
             {
                 id: 2,
@@ -92,6 +93,15 @@ export default function admin() {
         console.log(subfields)
     }
 
+    function posting(){
+        axios.post('http://127.0.0.1:8000/api/overview/',{
+            title:title,
+            data:subfields,
+        })
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+    }
+
 
     function videoslist(valvideo,mainindex) {
        
@@ -133,7 +143,10 @@ export default function admin() {
                     </ul>
                     <button onClick={addsubfields} > + </button>
                 </li>
+                <br />
+                <button onClick={posting}> submit </button>
             </ul>
+           
         </div>
 
     )
