@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import AdminNavbar from './AdminNavbar'
 
 export default function updatelist() {
 
@@ -15,7 +16,7 @@ export default function updatelist() {
                 imgurl: imgurl
             })
                 .then(res => {
-                    console.log(res)
+                   // console.log(res)
                     location.reload()
                 })
                 .catch(err => console.log(err))
@@ -48,6 +49,8 @@ export default function updatelist() {
 
 
     return (
+        <div>
+            <AdminNavbar />
         <div className="row  no-gutters">
             <div className="col-md-6 no-gutters">
                 <div className="leftside">
@@ -80,6 +83,7 @@ export default function updatelist() {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     )
 

@@ -6,6 +6,7 @@ import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from
 import renderHTML from 'react-render-html';
 import parse from 'html-react-parser'
 
+
 export default function enroll() {
 
     const [firstname,setFirstname] = useState()
@@ -16,7 +17,8 @@ export default function enroll() {
     const [phonenumber,setPhonenumber] = useState('')
     const [template,setTemplate] = useState({'name':'yash'})
     const [feedback,setFeedback] = useState()
-    const[action,setAction]= useState()
+    const [action,setAction]= useState()
+    const [courseslist,setCourseslist] = useState()
 
     useEffect(() =>{        
         let axiosConfig={
@@ -40,6 +42,13 @@ export default function enroll() {
         
         })
         .catch(err=>console.log(err))
+        
+        axios.get('http://127.0.0.1:8000/api/courses/')
+        .then(res=>{
+            //console.log(res.data)
+            setCourseslist(res.data)
+        })
+        .catch(err=>console.log(err))    
     },[])
 
 
@@ -111,12 +120,19 @@ export default function enroll() {
             <br />
 
             <select  onChange={(e) => setCourse(e.target.value)}  >
-                <option hidden> Select the course </option>
+                {/* <option hidden> Select the course </option>
                 <option value="android" >  android </option>
                 <option value="kotlin">  kotlin </option>
                 <option value="flutter" >  flutter </option>
-                <option value="ios" > ios </option>
+                <option value="ios" > ios </option> */}
+              {  
+                courseslist && courseslist.map( (course,index) => (
+                    <option value={course.title} key={index} > {course.title} </option> 
+                ))
+              }
+
             </select>
+
 
             <br />
 

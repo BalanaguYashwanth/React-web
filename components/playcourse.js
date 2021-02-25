@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import Navbar from './navbar'
 import ReactPlayer from 'react-player'
 import Enroll from './enroll'
+import { Player } from 'video-react';
+
 
 export default function playcourse() {
     const { course } = useParams(); // learn/:course is there and get {course} from useParams
@@ -93,12 +95,19 @@ export default function playcourse() {
 
 
     function contentdata(content) {
+        let arr=[]
+        for(let obj in content)
+        {
+            arr.push(content[obj])
+        }
+    
+        console.log(arr)
+
         return (
             <div>
                 {
-                    Object.entries(content).map(([key, value]) => (
-
-                        <button key={key} id="select" className={key} onClick={() => (setVideo(value))}> {key}   </button>
+                    arr.map( (value,index) => (
+                        <button key={index} id="select" className={value.field} onClick={() => (setVideo(value.link))}>  {value.field}  </button>
                     ))
                 }
             </div>
@@ -128,7 +137,6 @@ export default function playcourse() {
                         <div className="leftside ">
 
                             <ReactPlayer
-
                                 config={{ file: { attributes: { controlsList: 'nodownload' } } }}
                                 id="playvideocolor"
                                 onContextMenu={e => e.preventDefault()}
@@ -159,8 +167,8 @@ export default function playcourse() {
 
                                     <div key={index} >
 
-                                        <button id="select" style={{ textAlign: 'center' }}   >{data.subtitle}  <i className="fa fa-caret-down"></i> </button>
-                                        { show && <div> {contentdata(data)} </div>}
+                                        <button id="select" style={{ textAlign: 'center' }} > {data.subtitle}  <i className="fa fa-caret-down"></i> </button>
+                                        { show && <div> {contentdata(data.videos)} </div>}
 
                                         {/* <button id="select" style={{ textAlign: 'center' }}  >      <i className="fa fa-caret-down"></i> </button> */}
                                     </div>

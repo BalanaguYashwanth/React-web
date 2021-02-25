@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import AdminNavbar from './AdminNavbar'
 
 export default function admin() {
-
 
     const [subfields, setSubfields] = useState(
         [
@@ -109,6 +109,7 @@ export default function admin() {
 
     return (
         <div>
+            <AdminNavbar />
             <div className="row no-gutters" >
                 <div className="col-md-6 no-gutters" >
                     <div className="leftside" >

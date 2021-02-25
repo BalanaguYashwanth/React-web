@@ -6,7 +6,8 @@ export default function logout(){
     const history = useHistory();
 
     useEffect( () => {
-
+        
+        
         let axiosConfig={
             headers:{
                 Authorization : "Bearer "+window.atob(localStorage.getItem('access-token'))
@@ -19,6 +20,7 @@ export default function logout(){
         .then(res=>{
             localStorage.removeItem('access-token')
             localStorage.removeItem('refresh-token')
+            
             console.log(res.data)
             history.push('/login')
         })
