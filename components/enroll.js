@@ -20,7 +20,7 @@ export default function enroll() {
     const [action,setAction]= useState()
     const [courseslist,setCourseslist] = useState()
 
-    useEffect(() =>{        
+    useEffect(() =>{
         let axiosConfig={
             headers:{
                 Authorization : "Bearer " +window.atob(localStorage.getItem('access-token'))
@@ -29,7 +29,6 @@ export default function enroll() {
 
         axios.get('http://127.0.0.1:8000/userdetails',axiosConfig)
         .then(res=>{
-            //console.log(res.data)
             let result=res.data
 
             for(let obj in result)
@@ -43,12 +42,12 @@ export default function enroll() {
         })
         .catch(err=>console.log(err))
         
-        axios.get('http://127.0.0.1:8000/api/courses/')
+        axios.get('http://127.0.0.1:8000/api/courses/',axiosConfig)
         .then(res=>{
-            //console.log(res.data)
             setCourseslist(res.data)
         })
         .catch(err=>console.log(err))    
+    
     },[])
 
 
@@ -71,10 +70,10 @@ export default function enroll() {
                 phone:phonenumber,
                 email:email,
                 course:course,
+                udf1:window.atob(localStorage.getItem('access-token')),
             },axiosConfig)
             .then(async res=>{
                 let alldetails={}
-            
             
                 let paydetail = res.data
             
@@ -120,11 +119,6 @@ export default function enroll() {
             <br />
 
             <select  onChange={(e) => setCourse(e.target.value)}  >
-                {/* <option hidden> Select the course </option>
-                <option value="android" >  android </option>
-                <option value="kotlin">  kotlin </option>
-                <option value="flutter" >  flutter </option>
-                <option value="ios" > ios </option> */}
               {  
                 courseslist && courseslist.map( (course,index) => (
                     <option value={course.title} key={index} > {course.title} </option> 
@@ -133,12 +127,7 @@ export default function enroll() {
 
             </select>
 
-
             <br />
-
-        {/* {
-          template['key']
-        } */}
 
 
         <form action="https://sandboxsecure.payu.in/_payment" method="post" name="payuForm">

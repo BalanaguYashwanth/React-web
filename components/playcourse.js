@@ -101,7 +101,7 @@ export default function playcourse() {
             arr.push(content[obj])
         }
     
-        console.log(arr)
+        //console.log(arr)
 
         return (
             <div>

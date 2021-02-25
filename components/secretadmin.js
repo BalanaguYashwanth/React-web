@@ -4,6 +4,8 @@ import AdminNavbar from './AdminNavbar'
 
 export default function admin() {
 
+    const [admin,setAdmin] = useState()
+
     const [subfields, setSubfields] = useState(
         [
             {
@@ -19,7 +21,21 @@ export default function admin() {
     const [result, setResult] = useState()
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/overview/')
+
+        let axiosConfig={
+            headers:{
+                Authorization:"Token "+window.atob(localStorage.getItem('admin-token'))
+            }
+        }
+
+        axios.get('http://127.0.0.1:8000/usergroups',axiosConfig)
+        .then(res=>{
+            setAdmin(res.data.admin)
+        })
+        .catch(err=>console.log(err))
+
+
+        axios.get('http://127.0.0.1:8000/api/overview/',axiosConfig)
             .then(res => {
                 //console.log(res.data)
                 setResult(res.data)
@@ -69,10 +85,17 @@ export default function admin() {
     }
 
     function posting() {
+
+        let axiosConfig={
+            headers:{
+                Authorization:"Token "+window.atob(localStorage.getItem('admin-token'))
+            }
+        }
+
         axios.post('http://127.0.0.1:8000/api/overview/', {
             title: title,
             data: subfields,
-        })
+        },axiosConfig)
             .then(res => {
                 console.log(res)
                 location.reload()
@@ -98,8 +121,14 @@ export default function admin() {
     }
 
     function deleting(id,title){
+
+        let axiosConfig={
+            headers:{
+                Authorization:"Token "+window.atob(localStorage.getItem('admin-token'))
+            }
+        }
         
-        axios.delete('http://127.0.0.1:8000/api/overview/'+id+'/')
+        axios.delete('http://127.0.0.1:8000/api/overview/'+id+'/',axiosConfig)
         .then(res=>{
             alert( 'Successfully deleted course link :- '+title)
             location.reload()
@@ -109,6 +138,7 @@ export default function admin() {
 
     return (
         <div>
+            <div>
             <AdminNavbar />
             <div className="row no-gutters" >
                 <div className="col-md-6 no-gutters" >
@@ -168,7 +198,7 @@ export default function admin() {
             </div>
 
 
-
+            </div>
         </div>
 
     )

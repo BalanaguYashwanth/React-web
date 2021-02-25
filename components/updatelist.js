@@ -11,10 +11,17 @@ export default function updatelist() {
 
     function change() {
         if (title && imgurl) {
+
+            let axiosConfig={
+                headers:{
+                    Authorization:"Token "+window.atob(localStorage.getItem('admin-token'))
+                }
+            }
+
             axios.post('http://127.0.0.1:8000/api/courses/', {
                 title: title,
                 imgurl: imgurl
-            })
+            },axiosConfig)
                 .then(res => {
                    // console.log(res)
                     location.reload()
@@ -24,12 +31,17 @@ export default function updatelist() {
         else {
             setFeedback('Please enter the all inputs')
         }
-
     }
 
     function deleting(id,title){
         
-        axios.delete('http://127.0.0.1:8000/api/courses/'+id+'/')
+        let axiosConfig={
+            headers:{
+                Authorization:"Token "+window.atob(localStorage.getItem('admin-token'))
+            }
+        }
+
+        axios.delete('http://127.0.0.1:8000/api/courses/'+id+'/',axiosConfig)
         .then(res=>{
             alert( 'Successfully deleted course :- '+title)
             location.reload()
@@ -39,9 +51,16 @@ export default function updatelist() {
     }
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/courses/')
+
+        let axiosConfig={
+            headers:{
+                Authorization:"Token "+window.atob(localStorage.getItem('admin-token'))
+            }
+        }
+        
+        axios.get('http://127.0.0.1:8000/api/courses/',axiosConfig)
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 setItems(res.data)
             })
             .catch(err => console.log(err))
