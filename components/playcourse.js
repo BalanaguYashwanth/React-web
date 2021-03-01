@@ -114,7 +114,10 @@ export default function playcourse() {
         )
     }
 
-  
+    // function retrive(vdata)
+    // {
+    //     return decodeURIComponent(vdata)
+    // }
 
 
     return (
@@ -140,7 +143,7 @@ export default function playcourse() {
                                 config={{ file: { attributes: { controlsList: 'nodownload' } } }}
                                 id="playvideocolor"
                                 onContextMenu={e => e.preventDefault()}
-                                url={video}
+                                url={window.atob(window.btoa(video))}
                                 className="react-player "
                                 controls
                                 width="100%"
